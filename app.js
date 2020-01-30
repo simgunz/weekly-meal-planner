@@ -2,8 +2,24 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+const glob = require('glob');
 var logger = require('morgan');
+const mongoose = require('mongoose');
 
+// Connect to the database
+const dbAddress = "mongodb+srv://simone:lJmrNCrhiv6FpUe3@cluster0-qbm8s.mongodb.net/test?retryWrites=true&w=majority"
+mongoose.connect(dbAddress, { useNewUrlParser: true });
+const db = mongoose.connection;
+db.on('error', () => {
+  throw new Error('unable to connect to database at ' + config.db);
+});
+
+const models = glob.sync('./models/*.js');
+models.forEach(function (model) {
+  require(model);
+});
+
+// Require routers
 var indexRouter = require('./routes/index');
 var recipesRouter = require('./routes/recipes');
 
