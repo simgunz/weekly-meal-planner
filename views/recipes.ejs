@@ -1,0 +1,13 @@
+<% include partials/header %>
+
+    <h1>Recipes</h1>
+    <button type="button">Add recipe</button>
+    <div id="recipes-table">
+        <ul>
+            <% for(var i=0; i < recipes.length; i++) { %>
+                <li><%= recipes[i] %></li>
+            <% }; %>
+        </ul>
+    </div>
+
+<% include partials/footer %>
