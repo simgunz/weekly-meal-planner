@@ -1,15 +1,26 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <title><%- title %></title>
-  <link rel="stylesheet" href="/tylesheets/style.css">
+  <!-- <link rel="stylesheet" href="/stylesheets/style.css"> -->
 </head>
+
 <body>
-  <nav>
-    <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/recipes">Recipes</a></li>
-    </ul>
+
+  <nav class="navbar bg-info navbar-expand-lg navbar-light navbar-inverse">
+    <div class="container">
+      <button class="navbar-toggler" data-toggle="collapse" data-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" href="/">Home</a>
+          <a class="nav-item nav-link" href="/recipes">Recipes</a>
+        </div>
+      </div>
   </nav>

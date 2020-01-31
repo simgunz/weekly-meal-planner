@@ -1,13 +1,50 @@
 <% include partials/header %>
 
-    <h1>Recipes</h1>
-    <p><a href="recipes/create/">Add Recipe</a></p>
-    <div id="recipes-table">
-        <ul>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card card-block">
+        <div class="card-header container-fluid">
+          <div class="row">
+            <div class="col-md-10">
+              <h2>Secondi</h2>
+            </div>
+            <div class="col-md-2 float-right">
+              <a class="btn btn-primary" href="recipes/create/" role="button">Add</a>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <ul>
             <% for(var i=0; i < recipes.length; i++) { %>
-                <li><%= recipes[i] %></li>
+            <li><%= recipes[i] %></li>
             <% }; %>
-        </ul>
+          </ul>
+        </div>
+      </div>
     </div>
+    <div class="col-lg-6">
+      <div class="card card-block">
+        <div class="card-header container-fluid">
+          <div class="row">
+            <div class="col-md-10">
+              <h2>Contorni</h2>
+            </div>
+            <div class="col-md-2 float-right">
+              <a class="btn btn-primary" href="recipes/create/" role="button">Add</a>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <ul>
+            <% for(var i=0; i < recipes.length; i++) { %>
+            <li><%= recipes[i] %></li>
+            <% }; %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <% include partials/footer %>
