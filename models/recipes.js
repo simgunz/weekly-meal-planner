@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const RecipeSchema = new Schema({
   name: String,
-  text: String
+  text: String,
 });
 
 mongoose.model('Recipe', RecipeSchema);

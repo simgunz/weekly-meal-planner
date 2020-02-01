@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const mongoose = require('mongoose');
 
 const Recipe = mongoose.model('Recipe');
@@ -14,9 +14,9 @@ router.get('/create', function(req, res, next) {
 });
 
 router.post('/create', function(req, res) {
-  let newRecipe = Recipe(req.body).save(function(err, data) {
-      if (err) throw err;
-      res.json(data);
+  Recipe(req.body).save(function(err, data) {
+    if (err) throw err;
+    res.json(data);
   });
 });
 
