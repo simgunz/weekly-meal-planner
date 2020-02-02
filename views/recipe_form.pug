@@ -10,7 +10,9 @@ block content
       label(for='servings') Number of servings:
       input#servings.form-control(type='text', name='servings' value=(undefined===recipe ? '' : recipe.servings))
       label(for='course') Course:
-      input#course.form-control(type='text', name='course' value=(undefined===recipe ? '' : recipe.course))
+      select#course.form-control(type='text', name='course' value=(undefined===recipe ? '' : recipe.course))
+        each course in courses
+            option(value=course) #{course}
       label(for='category') Category:
       select#category.form-control(type='select', placeholder='Select category' name='category' value=(undefined===recipe ? '' : recipe.category))
         each category in categories
