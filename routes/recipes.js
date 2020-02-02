@@ -1,24 +1,16 @@
 const express = require('express');
 
 const router = express.Router();
-const mongoose = require('mongoose');
+const recipeController = require('../controllers/recipeController');
 
-const Recipe = mongoose.model('Recipe');
-
-/* GET receips listing. */
-router.get('/', function(req, res, next) {
-  res.render('recipes', { title: 'Recipes', recipes: ['Hamburger', 'Patate'] });
-});
-
-router.get('/create', function(req, res, next) {
-  res.render('recipes-create', { title: 'Create Recipe' });
-});
-
-router.post('/create', function(req, res) {
-  Recipe(req.body).save(function(err, data) {
-    if (err) throw err;
-    res.json(data);
-  });
-});
+router.get('/', recipeController.index);
+router.get('/recipe/create', recipeController.recipe_create_get);
+router.post('/recipe/create', recipeController.recipe_create_post);
+router.get('/recipe/:id/delete', recipeController.recipe_delete_get);
+router.post('/recipe/:id/delete', recipeController.recipe_delete_post);
+router.get('/recipe/:id/update', recipeController.recipe_update_get);
+router.post('/recipe/:id/update', recipeController.recipe_update_post);
+router.get('/recipe/:id', recipeController.recipe_detail);
+router.get('/recipes', recipeController.recipe_list);
 
 module.exports = router;
