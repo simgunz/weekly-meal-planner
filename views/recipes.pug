@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  div.container.mt-5
+    div.row
+      div.col-lg-6
+        div.card.card-block
+          div.card-header.container-fluid
+            div.row
+              div.col-md-10
+                h2 Secondi
+              div.col-md-2.float-right
+                a.btn.btn-primary(href="recipe/create/" role="button") Add
+          div.card-body
+            ul
+              each recipe in recipes
+                li= recipe.name
+      div.col-lg-6
+        div.card.card-block
+          div.card-header.container-fluid
+            div.row
+              div.col-md-10
+                h2 Contorni
+              div.col-md-2.float-right
+                a.btn.btn-primary(href="recipe/create/" role="button") Add
+          div.card-body
+            ul
+              each recipe in recipes
+                li= recipe.name

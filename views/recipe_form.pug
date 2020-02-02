@@ -1,0 +1,36 @@
+extends layout
+
+block content
+  h1 #{title}
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='name') Name:
+      input#name.form-control(type='text', name='name' value=(undefined===recipe ? '' : recipe.name))
+      label(for='servings') Number of servings:
+      input#servings.form-control(type='text', name='servings' value=(undefined===recipe ? '' : recipe.servings))
+      label(for='course') Course:
+      input#course.form-control(type='text', name='course' value=(undefined===recipe ? '' : recipe.course))
+      label(for='category') Category:
+      select#category.form-control(type='select', placeholder='Select category' name='category' value=(undefined===recipe ? '' : recipe.category))
+        each category in categories
+          option(value=category) #{category}
+      label(for='servedWith') Served with:
+      select#recipe.form-control(type='select' placeholder='Select sides' name='servedWith' required='false')
+        - recipe_list.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+        each recipe in recipe_list
+          option(value=recipe._id) #{recipe.name}
+        //-   if recipeinstance
+        //-     option(value=recipe._id selected=(recipeinstance.recipe.toString()==recipe._id.toString() ? 'selected' : false)) #{recipe.title}
+        //-   else
+
+      label(for='ingredients') Ingredients:
+      input#ingredients.form-control(type='text', name='ingredients' value=(undefined===recipe ? '' : recipe.ingredients))
+      label(for='instructions') Instructions:
+      input#instructions.form-control(type='text', name='instructions' value=(undefined===recipe ? '' : recipe.instructions))
+    button.btn.btn-primary(type='submit') Submit
+
+  if errors
+   ul
+    for error in errors
+     li!= error.msg

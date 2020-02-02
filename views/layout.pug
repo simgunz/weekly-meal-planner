@@ -1,0 +1,23 @@
+doctype html
+html(lang='en')
+  head
+    title= title
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css')
+  body
+    nav.navbar.bg-info.navbar-expand-lg.navbar-light.navbar-inverse
+      div.container
+        button.navbar-toggler(data-toggle='collapse' data-target='#mainNav')
+          span.navbar-toggler-icon
+      div#mainNav.collapse.navbar-collapse
+        div.navbar-nav
+          a.nav-item.nav-link(href='/') Home
+          a.nav-item.nav-link(href='/recipes') Recipes
+
+    block content
+
+    script(src='http://localhost:35729/livereload.js')
+    script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js')
