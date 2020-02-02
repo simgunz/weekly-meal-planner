@@ -9,7 +9,11 @@ block content
   p: strong Category
   p #{recipe.category}
   p: strong Served with
-  p #{recipe.servedWith}
+  p
+  each val, index in recipe.servedWith
+    a(href=val.url) #{val.name}
+    if index < recipe.servedWith.length - 1
+      |,
   p: strong Ingredients
   p #{recipe.ingredients}
   p: strong Instructions

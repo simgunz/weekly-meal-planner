@@ -19,10 +19,12 @@ exports.recipe_list = function(req, res) {
 
 // Display detail page for a specific Recipe.
 exports.recipe_detail = function(req, res) {
-  Recipe.findById(req.params.id, function(err, results) {
-    if (err) throw err;
-    res.render('recipe', { recipe: results });
-  });
+  Recipe.findById(req.params.id)
+    .populate('servedWith')
+    .exec(function(err, results) {
+      if (err) throw err;
+      res.render('recipe', { recipe: results });
+    });
 };
 
 // Display Recipe create form on GET.
