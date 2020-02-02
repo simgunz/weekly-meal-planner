@@ -7,7 +7,7 @@ const RecipeSchema = new Schema({
   servings: Number,
   course: String,
   category: String,
-  served_with: { type: Schema.Types.ObjectId, ref: 'Recipe', required: false },
+  servedWith: { type: Schema.Types.ObjectId, ref: 'Recipe', required: false },
   ingredients: [String],
   instructions: String,
 });
