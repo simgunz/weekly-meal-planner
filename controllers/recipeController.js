@@ -1,4 +1,9 @@
+const { body, validationResult } = require('express-validator/check');
+const { sanitizeBody } = require('express-validator/filter');
+
 const Recipe = require('../models/recipe');
+
+const foodCategories = ['Pollo', 'Carne', 'Pesce'];
 
 exports.index = function(req, res) {
   res.send('NOT IMPLEMENTED: Site Home Page');
@@ -6,23 +11,104 @@ exports.index = function(req, res) {
 
 // Display list of all Recipes.
 exports.recipe_list = function(req, res) {
-  res.send('NOT IMPLEMENTED: Recipe list');
+  Recipe.find({}, function(err, results) {
+    if (err) throw err;
+    res.render('recipes', { recipes: results });
+  });
 };
 
 // Display detail page for a specific Recipe.
 exports.recipe_detail = function(req, res) {
-  res.send(`NOT IMPLEMENTED: Recipe detail: ${req.params.id}`);
+  Recipe.findById(req.params.id, function(err, results) {
+    if (err) throw err;
+    res.render('recipes', { recipes: results });
+  });
 };
 
 // Display Recipe create form on GET.
-exports.recipe_create_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: Recipe create GET');
+exports.recipe_create_get = function(req, res, next) {
+  Recipe.find({}, 'name').exec(function(err, recipes) {
+    if (err) {
+      return next(err);
+    }
+    // Successful, so render.
+    res.render('recipe_form', {
+      title: 'Create Recipe',
+      recipe_list: recipes,
+      categories: foodCategories,
+    });
+  });
 };
 
 // Handle Recipe create on POST.
-exports.recipe_create_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: Recipe create POST');
-};
+exports.recipe_create_post = [
+  (req, res, next) => {
+    if (!(req.body.servedWith instanceof Array)) {
+      if (typeof req.body.servedWith === 'undefined') req.body.servedWith = [];
+      else req.body.servedWith = new Array(req.body.servedWith);
+    }
+    next();
+  },
+  // Validate that the name field is not empty.
+  body('name', 'Recipe name required')
+    .isLength({ min: 1 })
+    .trim(),
+  // Sanitize (escape) the name field.
+  sanitizeBody('name').escape(),
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Create a genre object with escaped and trimmed data.
+    const recipe = new Recipe({
+      name: req.body.name,
+      servings: req.body.servings,
+      course: req.body.course,
+      category: req.body.category,
+      servedWith: req.body.servedWith,
+      ingredients: req.body.ingredients,
+      instructions: req.body.instructions,
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render the form again with sanitized values/error messages.
+      Recipe.find({}, 'name').exec(function(err, recipes) {
+        if (err) {
+          return next(err);
+        }
+        res.render('recipe_form', {
+          title: 'Create Recipe',
+          recipe_list: recipes,
+          categories: foodCategories,
+          recipe: req.body,
+          errors: errors.array(),
+        });
+      });
+    } else {
+      // Data from form is valid.
+      // Check if Genre with same name already exists.
+      Recipe.findOne({ name: req.body.name }).exec(function(err, foundRecipe) {
+        if (err) {
+          return next(err);
+        }
+
+        if (foundRecipe) {
+          // Recipe exists, redirect to its detail page.
+          res.redirect(foundRecipe.url);
+        } else {
+          recipe.save(function(err) {
+            if (err) {
+              return next(err);
+            }
+            // Genre saved. Redirect to genre detail page.
+            res.redirect(recipe.url);
+          });
+        }
+      });
+    }
+  },
+];
 
 // Display Recipe delete form on GET.
 exports.recipe_delete_get = function(req, res) {
