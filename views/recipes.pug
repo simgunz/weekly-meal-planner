@@ -14,7 +14,8 @@ block content
           div.card-body
             ul
               each recipe in recipes
-                li= recipe.name
+                li
+                  a(href=recipe.url)= recipe.name
       div.col-lg-6
         div.card.card-block
           div.card-header.container-fluid
@@ -26,4 +27,5 @@ block content
           div.card-body
             ul
               each recipe in recipes
-                li= recipe.name
+                li
+                  a(href=recipe.url)= recipe.name
