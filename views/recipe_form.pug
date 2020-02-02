@@ -16,7 +16,7 @@ block content
         each category in categories
           option(value=category) #{category}
       label(for='servedWith') Served with:
-      select#recipe.form-control(type='select' placeholder='Select sides' name='servedWith' required='false')
+      select#recipe.form-control(type='select' placeholder='Select sides' name='servedWith')
         - recipe_list.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
         each recipe in recipe_list
           option(value=recipe._id) #{recipe.name}
