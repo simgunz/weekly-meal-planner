@@ -21,7 +21,7 @@ exports.recipe_list = function(req, res) {
 exports.recipe_detail = function(req, res) {
   Recipe.findById(req.params.id, function(err, results) {
     if (err) throw err;
-    res.render('recipes', { recipes: results });
+    res.render('recipe', { recipe: results });
   });
 };
 

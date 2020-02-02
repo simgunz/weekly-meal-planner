@@ -1,16 +1,16 @@
 extends layout
 
 block content
-  h1 #{name}
+  h1 #{recipe.name}
   p: strong Number of servings
-  p #{servings}
+  p #{recipe.servings}
   p: strong Course
-  p #{course}
+  p #{recipe.course}
   p: strong Category
-  p #{category}
+  p #{recipe.category}
   p: strong Served with
-  p #{servedWith}
+  p #{recipe.servedWith}
   p: strong Ingredients
-  p #{ingredients}
+  p #{recipe.ingredients}
   p: strong Instructions
-  p #{instructions}
+  p #{recipe.instructions}
