@@ -1,20 +1,35 @@
 const { body, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
+const async = require('async');
 
 const Recipe = require('../models/recipe');
 
-const foodCategories = ['Pollo', 'Carne', 'Pesce'];
+const categories = ['Pollo', 'Carne', 'Pesce'];
+const courses = ['Primo', 'Secondo', 'Contorno'];
 
 exports.index = function(req, res) {
   res.send('NOT IMPLEMENTED: Site Home Page');
 };
 
 // Display list of all Recipes.
-exports.recipe_list = function(req, res) {
-  Recipe.find({}, function(err, results) {
-    if (err) throw err;
-    res.render('recipes', { recipes: results });
-  });
+exports.recipe_list = function(req, res, next) {
+  async.parallel(
+    {
+      seconds(callback) {
+        Recipe.find({ course: 'Secondo' }, callback);
+      },
+      sides(callback) {
+        Recipe.find({ course: 'Contorno' }, callback);
+      },
+    },
+    function(err, results) {
+      if (err) return next(err);
+      res.render('recipes', {
+        seconds: results.seconds,
+        sides: results.sides,
+      });
+    }
+  );
 };
 
 // Display detail page for a specific Recipe.
@@ -37,7 +52,8 @@ exports.recipe_create_get = function(req, res, next) {
     res.render('recipe_form', {
       title: 'Create Recipe',
       recipe_list: recipes,
-      categories: foodCategories,
+      courses,
+      categories,
     });
   });
 };
