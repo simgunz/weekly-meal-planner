@@ -12,7 +12,7 @@ const dbAddress =
 mongoose.connect(dbAddress, { useNewUrlParser: true });
 const db = mongoose.connection;
 db.on('error', () => {
-  throw new Error(`unable to connect to database at ${config.db}`);
+  throw new Error(`unable to connect to database at ${dbAddress}`);
 });
 
 const models = glob.sync('./models/*.js');
