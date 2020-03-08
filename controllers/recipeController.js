@@ -98,7 +98,7 @@ exports.recipe_create_post = [
         res.render('recipe_form', {
           title: 'Create Recipe',
           recipe_list: recipes,
-          categories: foodCategories,
+          categories,
           recipe: req.body,
           errors: errors.array(),
         });
