@@ -7,9 +7,13 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "nodemon",
-            "runtimeExecutable": "nodemon",
-            "program": "${workspaceFolder}/bin/www",
+            "name": "Debug",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "debug"
+            ],
+            "port": 9229,
             "restart": true,
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
