@@ -7,23 +7,13 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch via NPM",
+            "name": "Debug",
             "runtimeExecutable": "npm",
             "runtimeArgs": [
                 "run-script",
                 "debug"
             ],
             "port": 9229,
-            "skipFiles": [
-                "<node_internals>/**"
-            ]
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "nodemon",
-            "runtimeExecutable": "nodemon",
-            "program": "${workspaceFolder}/bin/www",
             "restart": true,
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
