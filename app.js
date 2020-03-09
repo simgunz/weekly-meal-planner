@@ -2,7 +2,6 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const glob = require('glob');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 
@@ -13,11 +12,6 @@ mongoose.connect(dbAddress, { useNewUrlParser: true });
 const db = mongoose.connection;
 db.on('error', () => {
   throw new Error(`unable to connect to database at ${dbAddress}`);
-});
-
-const models = glob.sync('./models/*.js');
-models.forEach(function(model) {
-  require(model);
 });
 
 // Require routers
