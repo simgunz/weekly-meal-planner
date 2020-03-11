@@ -5,7 +5,7 @@ const async = require('async');
 const Recipe = require('../models/recipe');
 
 const categories = ['Pollo', 'Carne', 'Pesce'];
-const courses = ['Primo', 'Secondo', 'Contorno'];
+const courses = ['Secondo', 'Contorno'];
 
 exports.index = function(req, res) {
   res.send('NOT IMPLEMENTED: Site Home Page');
