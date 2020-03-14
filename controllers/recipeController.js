@@ -85,7 +85,7 @@ exports.recipe_create_post = [
       course: req.body.course,
       category: req.body.category,
       servedWith: req.body.servedWith,
-      ingredients: req.body.ingredients,
+      ingredients: req.body['ingredients[]'],
       instructions: req.body.instructions,
     });
 

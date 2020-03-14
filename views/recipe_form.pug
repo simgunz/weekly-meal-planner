@@ -1,10 +1,13 @@
 extends layout
 
+block javascript
+  script(src='/javascripts/recipe_form.js')
+
 block content
   div.container
     h1 #{title}
 
-    form(method='POST' action='')
+    form#theform(method='POST' action='')
       div.form-group.row
         label.col-sm-2.col-form-label(for='name') Name:
         div.col-sm-10
@@ -51,9 +54,14 @@ block content
       div.form-group.row
         label.col-sm-2.col-form-label(for='ingredients') Ingredients:
         div.col-sm-9
-          input#ingredients.form-control(type='text'
-                                        name='ingredients'
-                                        value=(undefined===recipe ? '' : recipe.ingredients))
+          input#ingredients-input.form-control(type='text'
+                                               value=(undefined===recipe ? '' : recipe.ingredients)
+                                              )
+          ul.mt-sm-3#ingredients-list
+        div.col-sm-1
+          button#ingredients-add.btn.btn-primary(type='button') Add
+
+
       div.form-group.row
         label.col-sm-2.col-form-label(for='instructions') Instructions:
         div.col-sm-10
