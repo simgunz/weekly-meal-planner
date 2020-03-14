@@ -50,7 +50,7 @@ block content
           //-   else
       div.form-group.row
         label.col-sm-2.col-form-label(for='ingredients') Ingredients:
-        div.col-sm-10
+        div.col-sm-9
           input#ingredients.form-control(type='text'
                                         name='ingredients'
                                         value=(undefined===recipe ? '' : recipe.ingredients))
@@ -58,7 +58,8 @@ block content
         label.col-sm-2.col-form-label(for='instructions') Instructions:
         div.col-sm-10
           textarea#instructions.form-control(name='instructions' rows=10)=(undefined===recipe ? '' : recipe.instructions)
-      button.btn.btn-primary(type='submit') Submit
+      div.text-center
+        button.btn.btn-primary.text-center(type='submit') Submit
 
   if errors
     ul
