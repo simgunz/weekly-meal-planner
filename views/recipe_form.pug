@@ -56,10 +56,11 @@ block content
       div.form-group.row
         label.col-sm-2.col-form-label(for='ingredients') Ingredients:
         div.col-sm-9
-          input#ingredients-input.form-control(type='text'
-                                               value=(undefined===recipe ? '' : recipe.ingredients)
-                                              )
+          input#ingredients-input.form-control(type='text')
           ul.mt-sm-3#ingredients-list
+            if recipe !== undefined
+              each val in recipe.ingredients
+                li= val
         div.col-sm-1
           button#ingredients-add.btn.btn-primary(type='button') Add
 

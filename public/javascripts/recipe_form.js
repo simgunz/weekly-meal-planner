@@ -16,11 +16,11 @@ $(document).ready(function($) {
   });
 
   $('#theform').submit(function() {
-    //    e.preventDefault();
+    $('#theform input[name="ingredients"]').remove();
     $('#ingredients-list li').each(function() {
       $('<input />')
         .attr('type', 'hidden')
-        .attr('name', 'ingredients[]')
+        .attr('name', 'ingredients')
         .attr('value', $(this).text())
         .appendTo('#theform');
     });
