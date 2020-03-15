@@ -11,6 +11,17 @@ exports.index = function(req, res) {
   res.send('NOT IMPLEMENTED: Site Home Page');
 };
 
+// Convert undefined or string to array
+function toArray(values) {
+  if (values instanceof Array) {
+    return values;
+  }
+  if (typeof values === 'undefined') {
+    return [];
+  }
+  return Array(values);
+}
+
 // Display list of all Recipes.
 exports.recipe_list = function(req, res, next) {
   async.parallel(
@@ -61,33 +72,33 @@ exports.recipe_create_get = function(req, res, next) {
 // Handle Recipe create on POST.
 exports.recipe_create_post = [
   (req, res, next) => {
-    if (!(req.body.servedWith instanceof Array)) {
-      if (typeof req.body.servedWith === 'undefined') req.body.servedWith = [];
-      else req.body.servedWith = new Array(req.body.servedWith);
-    }
+    req.body.servedWith = toArray(req.body.servedWith);
+    req.body.ingredients = toArray(req.body.ingredients);
     next();
   },
-  // Validate that the name field is not empty.
+  // Validate fields
   body('name', 'Recipe name required')
     .isLength({ min: 1 })
-    .trim(),
-  // Sanitize (escape) the name field.
+    .trim()
+    .withMessage('The recipe name must be specified.'),
+  body('servings')
+    .isNumeric()
+    .withMessage('The number of serving must be numeric'),
+  body('ingredients')
+    .isArray()
+    .withMessage('Ingredients must be an array.')
+    .custom(ingredients => ingredients.length > 0)
+    .withMessage('At least one ingredient must be provided.'),
+  body('instructions').trim(),
+
+  // Sanitize fields
   sanitizeBody('name').escape(),
+  sanitizeBody('instructions').escape(),
+
   // Process request after validation and sanitization.
   (req, res, next) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
-
-    // Create a genre object with escaped and trimmed data.
-    const recipe = new Recipe({
-      name: req.body.name,
-      servings: req.body.servings,
-      course: req.body.course,
-      category: req.body.category,
-      servedWith: req.body.servedWith,
-      ingredients: req.body.ingredients,
-      instructions: req.body.instructions,
-    });
 
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
@@ -116,11 +127,22 @@ exports.recipe_create_post = [
           // Recipe exists, redirect to its detail page.
           res.redirect(foundRecipe.url);
         } else {
+          // Create a Recipe object with escaped and trimmed data.
+          const recipe = new Recipe({
+            name: req.body.name,
+            servings: req.body.servings,
+            course: req.body.course,
+            category: req.body.category,
+            servedWith: req.body.servedWith,
+            ingredients: req.body.ingredients,
+            instructions: req.body.instructions,
+          });
+
           recipe.save(function(err) {
             if (err) {
               return next(err);
             }
-            // Genre saved. Redirect to genre detail page.
+            // Recipe saved. Redirect to recipe detail page.
             res.redirect(recipe.url);
           });
         }
