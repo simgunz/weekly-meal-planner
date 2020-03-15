@@ -80,7 +80,18 @@ exports.recipe_create_post = [
   body('name', 'Recipe name required')
     .isLength({ min: 1 })
     .trim()
-    .withMessage('The recipe name must be specified.'),
+    .withMessage('The recipe name must be specified.')
+    .custom(name =>
+      Recipe.findOne({ name })
+        .exec()
+        .then(foundRecipe => {
+          if (foundRecipe) {
+            return Promise.reject(
+              new Error('A recipe with the same name already exists.')
+            );
+          }
+        })
+    ),
   body('servings')
     .isNumeric()
     .withMessage('The number of servings must be specified.'),
@@ -116,35 +127,24 @@ exports.recipe_create_post = [
       });
     } else {
       // Data from form is valid.
-      // Check if Genre with same name already exists.
-      Recipe.findOne({ name: req.body.name }).exec(function(err, foundRecipe) {
+
+      // Create a Recipe object with escaped and trimmed data.
+      const recipe = new Recipe({
+        name: req.body.name,
+        servings: req.body.servings,
+        course: req.body.course,
+        category: req.body.category,
+        servedWith: req.body.servedWith,
+        ingredients: req.body.ingredients,
+        instructions: req.body.instructions,
+      });
+
+      recipe.save(function(err) {
         if (err) {
           return next(err);
         }
-
-        if (foundRecipe) {
-          // Recipe exists, redirect to its detail page.
-          res.redirect(foundRecipe.url);
-        } else {
-          // Create a Recipe object with escaped and trimmed data.
-          const recipe = new Recipe({
-            name: req.body.name,
-            servings: req.body.servings,
-            course: req.body.course,
-            category: req.body.category,
-            servedWith: req.body.servedWith,
-            ingredients: req.body.ingredients,
-            instructions: req.body.instructions,
-          });
-
-          recipe.save(function(err) {
-            if (err) {
-              return next(err);
-            }
-            // Recipe saved. Redirect to recipe detail page.
-            res.redirect(recipe.url);
-          });
-        }
+        // Recipe saved. Redirect to recipe detail page.
+        res.redirect(recipe.url);
       });
     }
   },
