@@ -92,8 +92,7 @@ exports.recipe_create_post = [
   body('instructions').trim(),
 
   // Sanitize fields
-  sanitizeBody('name').escape(),
-  sanitizeBody('instructions').escape(),
+  sanitizeBody('*').escape(), // FIXME: is 'ingredients' sanitized?
 
   // Process request after validation and sanitization.
   (req, res, next) => {
