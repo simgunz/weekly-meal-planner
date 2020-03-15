@@ -13,6 +13,7 @@ block content
         div.col-sm-10
           input#name.form-control(type='text'
                                   name='name'
+                                  required
                                   value=(undefined===recipe ? '' : recipe.name))
       div.form-group.row
         label.col-sm-2.col-form-label(for='servings') Number of servings:
@@ -21,6 +22,7 @@ block content
                                       min=1
                                       max=99
                                       name='servings'
+                                      required
                                       value=(undefined===recipe ? '' : recipe.servings))
       div.form-group.row
         label.col-sm-2.col-form-label(for='course') Course:
