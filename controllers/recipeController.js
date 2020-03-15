@@ -83,7 +83,7 @@ exports.recipe_create_post = [
     .withMessage('The recipe name must be specified.'),
   body('servings')
     .isNumeric()
-    .withMessage('The number of serving must be numeric'),
+    .withMessage('The number of servings must be specified.'),
   body('ingredients')
     .isArray()
     .withMessage('Ingredients must be an array.')
