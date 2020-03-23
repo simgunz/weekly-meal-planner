@@ -14,6 +14,12 @@ html(lang='en')
         div.navbar-nav
           a.nav-item.nav-link(href='/') Home
           a.nav-item.nav-link(href='/recipes') Recipes
+          if locals.user
+            a.nav-item.nav-link(href="/user") Profile
+            a.nav-item.nav-link(href="/logout") LogOut
+          else
+            a.nav-item.nav-link(href="/login") LogIn
+
 
     block content
 
