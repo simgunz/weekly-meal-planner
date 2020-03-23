@@ -26,36 +26,12 @@ db.on('error', () => {
 const indexRouter = require('./routes/index');
 const recipesRouter = require('./routes/recipes');
 
+// Routers for login
+const userInViews = require('./lib/middleware/userInViews');
+const authRouter = require('./routes/auth');
+const usersRouter = require('./routes/users');
+
 const app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/', recipesRouter);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
-
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
 
 /**
  * Passport Configuration
@@ -67,7 +43,9 @@ const strategy = new Auth0Strategy(
     clientID: process.env.AUTH0_CLIENT_ID,
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
     callbackURL:
-      process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback',
+      process.env.AUTH0_CALLBACK_URL ||
+      'http://localhost:3000/callback' ||
+      'http://localhost:3001/callback',
   },
   function(accessToken, refreshToken, extraParams, profile, done) {
     /**
@@ -81,6 +59,29 @@ const strategy = new Auth0Strategy(
     return done(null, profile);
   }
 );
+
+passport.use(strategy);
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', indexRouter);
+app.use('/', recipesRouter);
 
 /**
  * Session Configuration
@@ -102,18 +103,29 @@ if (app.get('env') === 'production') {
  *  App Configuration for Auth0
  */
 
-passport.use(strategy);
+app.use(expressSession(session));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(expressSession(session));
+// Use router for login
+app.use(userInViews());
+app.use('/', authRouter);
+app.use('/', usersRouter);
 
-passport.serializeUser((user, done) => {
-  done(null, user);
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
 });
 
-passport.deserializeUser((user, done) => {
-  done(null, user);
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
 });
 
 module.exports = app;
