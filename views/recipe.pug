@@ -15,6 +15,8 @@ block content
     if index < recipe.servedWith.length - 1
       |,
   p: strong Ingredients
-  p #{recipe.ingredients}
+  ul
+    each val in recipe.ingredients
+      li= val
   p: strong Instructions
   p #{recipe.instructions}
