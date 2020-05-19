@@ -1,31 +1,27 @@
 extends layout
 
+block head
+  link(rel='stylesheet', type='text/css', href='stylesheets/recipes.css')
+
 block content
   div.container.mt-5
     div.row
       div.col-lg-6
-        div.card.card-block
-          div.card-header.container-fluid
-            div.row
-              div.col-md-10
-                h2 Secondi
-              div.col-md-2.float-right
-                a.btn.btn-primary(href="recipe/create/" role="button") Add
-          div.card-body
-            ul
-              each recipe in seconds
-                li
-                  a(href=recipe.url)= recipe.name
-      div.col-lg-6
-        div.card.card-block
-          div.card-header.container-fluid
-            div.row
-              div.col-md-10
-                h2 Contorni
-              div.col-md-2.float-right
-                a.btn.btn-primary(href="recipe/create/" role="button") Add
-          div.card-body
-            ul
-              each recipe in sides
-                li
-                  a(href=recipe.url)= recipe.name
+        div.recipe-list.card
+          div.card-header
+            div.row.align-items-center
+              div.col-11
+                h2(style='margin-bottom: 0px') Contorni
+              div.col-1
+                a(href='recipe/create/')
+                  i.fa.fa-plus.fa-lg
+          ul.list-group.list-group-flush
+            each recipe in sides
+              li.list-group-item.d-flex.align-items-center.justify-content-between
+                a(href=recipe.url)= recipe.name
+                span.tools
+                  a(href=recipe.url + '/update')
+                    i.fa.fa-edit.fa-lg
+                  a(href=recipe.url + '/delete')
+                    i.fa.fa-trash.fa-lg
+

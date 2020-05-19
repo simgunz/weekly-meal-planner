@@ -1,0 +1,11 @@
+.recipe-list li:hover .tools{
+    display: block;
+}
+
+.recipe-list .tools{
+    display: none;
+}
+
+.tools {
+    height: 100%;
+}
