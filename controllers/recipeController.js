@@ -24,23 +24,25 @@ function toArray(values) {
 
 // Display list of all Recipes.
 exports.recipe_list = function(req, res, next) {
-  async.parallel(
+  Recipe.aggregate([
+    { $unwind: '$course' },
     {
-      seconds(callback) {
-        Recipe.find({ course: 'Secondo' }, callback);
-      },
-      sides(callback) {
-        Recipe.find({ course: 'Contorno' }, callback);
+      $group: {
+        _id: '$course',
+        recipes: {
+          $push: {
+            name: '$name',
+            url: { $concat: ['/recipe/', { $toString: '$_id' }] },
+          },
+        },
       },
     },
-    function(err, results) {
-      if (err) return next(err);
-      res.render('recipes', {
-        seconds: results.seconds,
-        sides: results.sides,
-      });
-    }
-  );
+  ]).exec(function(err, results) {
+    if (err) return next(err);
+    res.render('recipes', {
+      courses: results,
+    });
+  });
 };
 
 // Display detail page for a specific Recipe.
