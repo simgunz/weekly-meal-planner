@@ -31,6 +31,7 @@ exports.recipe_list = function(req, res, next) {
         _id: '$course',
         recipes: {
           $push: {
+            _id: { $toString: '$_id' },
             name: '$name',
             url: { $concat: ['/recipe/', { $toString: '$_id' }] },
           },
@@ -154,14 +155,14 @@ exports.recipe_create_post = [
   },
 ];
 
-// Display Recipe delete form on GET.
-exports.recipe_delete_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: Recipe delete GET');
-};
-
 // Handle Recipe delete on POST.
-exports.recipe_delete_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: Recipe delete POST');
+exports.recipe_delete_post = function(req, res, next) {
+  Recipe.findByIdAndRemove(req.params.id, function(err) {
+    if (err) {
+      return next(err);
+    }
+    res.send(`Recipe ${req.params.id}has been deleted.`);
+  });
 };
 
 // Display Recipe update form on GET.

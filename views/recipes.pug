@@ -31,8 +31,22 @@ block content
                     li.list-group-item.d-flex.align-items-center.justify-content-between
                       a(href=recipe.url)= recipe.name
                       span.tools
-                        a(href=recipe.url + '/update')
+                        button
                           i.fa.fa-edit.fa-lg
-                        a(href=recipe.url + '/delete')
+                        button(onclick=`deleteRecipe("${recipe._id}")`)
                           i.fa.fa-trash.fa-lg
 
+  .modal.fade#exampleModal(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
+  .modal-dialog(role='document')
+    .modal-content
+      .modal-header
+        h5.modal-title#exampleModalLabel Modal title
+        button.close(type='button' data-dismiss='modal' aria-label='Close')
+          span(aria-hidden='true') ×
+      .modal-body.
+
+        ...
+
+      .modal-footer
+        button.btn.btn-secondary(type='button' data-dismiss='modal') Close
+        button.btn.btn-primary(type='button') Save changes

@@ -6,7 +6,6 @@ const recipeController = require('../controllers/recipeController');
 router.get('/', recipeController.index);
 router.get('/recipe/create', recipeController.recipe_create_get);
 router.post('/recipe/create', recipeController.recipe_create_post);
-router.get('/recipe/:id/delete', recipeController.recipe_delete_get);
 router.post('/recipe/:id/delete', recipeController.recipe_delete_post);
 router.get('/recipe/:id/update', recipeController.recipe_update_get);
 router.post('/recipe/:id/update', recipeController.recipe_update_post);

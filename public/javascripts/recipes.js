@@ -10,3 +10,13 @@ $('.carousel').bind('slide.bs.carousel', function(e) {
     }
   });
 });
+
+function deleteRecipe(recipeid) {
+  $.ajax({
+    type: 'POST',
+    url: `/recipe/${recipeid}/delete`,
+    success(response) {
+      window.location.reload();
+    },
+  });
+}
