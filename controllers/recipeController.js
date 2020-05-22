@@ -166,11 +166,108 @@ exports.recipe_delete_post = function(req, res, next) {
 };
 
 // Display Recipe update form on GET.
-exports.recipe_update_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: Recipe update GET');
+exports.recipe_update_get = function(req, res, next) {
+  async.parallel(
+    {
+      recipe(callback) {
+        Recipe.findById(req.params.id).exec(callback);
+      },
+      recipes(callback) {
+        Recipe.find({}, 'name').exec(callback);
+      },
+    },
+    function(err, results) {
+      if (err) {
+        return next(err);
+      }
+      if (results.recipe == null) {
+        // No results.
+        const err = new Error('Recipe not found');
+        err.status = 404;
+        return next(err);
+      }
+      // Successful, so render.
+      res.render('recipe_form', {
+        title: 'Edit Recipe',
+        recipe_list: results.recipes,
+        courses,
+        categories,
+        recipe: results.recipe,
+      });
+    }
+  );
 };
 
 // Handle recipe update on POST.
-exports.recipe_update_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: Recipe update POST');
-};
+// It is a copy/paste of create POST. FIXME: reuse code
+exports.recipe_update_post = [
+  (req, res, next) => {
+    req.body.servedWith = toArray(req.body.servedWith);
+    req.body.ingredients = toArray(req.body.ingredients);
+    next();
+  },
+  // Validate fields
+  body('name', 'Recipe name required')
+    .isLength({ min: 1 })
+    .trim()
+    .withMessage('The recipe name must be specified.'),
+  body('servings')
+    .isNumeric()
+    .withMessage('The number of servings must be specified.'),
+  body('ingredients')
+    .isArray()
+    .withMessage('Ingredients must be an array.')
+    .custom(ingredients => ingredients.length > 0)
+    .withMessage('At least one ingredient must be provided.'),
+  body('instructions').trim(),
+
+  // Sanitize fields
+  sanitizeBody('name').escape(),
+  sanitizeBody('ingredients.*').escape(),
+  sanitizeBody('instructions').escape(),
+
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render the form again with sanitized values/error messages.
+      Recipe.find({}, 'name').exec(function(err, recipes) {
+        if (err) {
+          return next(err);
+        }
+        res.render('recipe_form', {
+          title: 'Create Recipe',
+          recipe_list: recipes,
+          courses,
+          categories,
+          recipe: req.body,
+          errors: errors.array(),
+        });
+      });
+    } else {
+      // Data from form is valid.
+
+      // Create a Recipe object with escaped and trimmed data.
+      const recipe = new Recipe({
+        _id: req.params.id, // This is required, or a new ID will be assigned!
+        name: req.body.name,
+        servings: req.body.servings,
+        course: req.body.course,
+        category: req.body.category,
+        servedWith: req.body.servedWith,
+        ingredients: req.body.ingredients,
+        instructions: req.body.instructions,
+      });
+
+      Recipe.findByIdAndUpdate(req.params.id, recipe, {}, function(err) {
+        if (err) {
+          return next(err);
+        }
+        // Successful - redirect to recipe detail page.
+        res.redirect(recipe.url);
+      });
+    }
+  },
+];
