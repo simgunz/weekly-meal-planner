@@ -1,7 +1,7 @@
 extends layout
 
 block head
-  link(rel='stylesheet', type='text/css', href='stylesheets/recipes.css')
+  link(rel='stylesheet' type='text/css' href='stylesheets/recipes.css')
 
 block javascript
   script(src='javascripts/recipes.js')
@@ -12,7 +12,7 @@ block content
       div.col-lg-2.list-group
         each course, index in courses
           a.list-group-item.list-group-item-action(href='#' + course._id, data-target="#recipes-carousel",
-           data-slide-to=index, class=index==0?'active':'') #{course._id}
+            data-slide-to=index, class=index==0?'active':'') #{course._id}
 
       div.col-lg-10
         div#recipes-carousel.carousel.slide
@@ -33,20 +33,27 @@ block content
                       span.tools
                         button
                           i.fa.fa-edit.fa-lg
-                        button(onclick=`deleteRecipe("${recipe._id}")`)
+                        button.btn(type='button'
+                          data-toggle='modal'
+                          data-target='#deleteModal'
+                          data-recipename=`${recipe.name}`
+                          data-url=`/recipe/${recipe._id}/delete`
+                          )
                           i.fa.fa-trash.fa-lg
 
-  .modal.fade#exampleModal(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
-  .modal-dialog(role='document')
-    .modal-content
-      .modal-header
-        h5.modal-title#exampleModalLabel Modal title
-        button.close(type='button' data-dismiss='modal' aria-label='Close')
-          span(aria-hidden='true') ×
-      .modal-body.
+  div#deleteModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='deleteModalLabel' aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          h5.modal-title#deleteModalLabel Confirm
+          button.close(type='button' data-dismiss='modal' aria-label='Close')
+            span(aria-hidden='true')
+        .modal-body.
 
-        ...
+          Delete the recipe?
 
-      .modal-footer
-        button.btn.btn-secondary(type='button' data-dismiss='modal') Close
-        button.btn.btn-primary(type='button') Save changes
+        .modal-footer
+          form#deleteForm(action='' method='post')
+            input(type='hidden' name='id')
+            button.btn.btn-secondary(type='button' data-dismiss='modal') Cancel
+            button.btn.btn-danger(type='submit') Delete

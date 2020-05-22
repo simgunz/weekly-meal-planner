@@ -11,12 +11,8 @@ $('.carousel').bind('slide.bs.carousel', function(e) {
   });
 });
 
-function deleteRecipe(recipeid) {
-  $.ajax({
-    type: 'POST',
-    url: `/recipe/${recipeid}/delete`,
-    success(response) {
-      window.location.reload();
-    },
-  });
-}
+$('#deleteModal').on('show.bs.modal', function(e) {
+  const button = $(e.relatedTarget);
+  const url = button.data('url');
+  $('#deleteForm').attr('action', url);
+});

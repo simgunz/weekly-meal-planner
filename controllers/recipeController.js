@@ -161,7 +161,7 @@ exports.recipe_delete_post = function(req, res, next) {
     if (err) {
       return next(err);
     }
-    res.send(`Recipe ${req.params.id}has been deleted.`);
+    res.redirect('/recipes');
   });
 };
 
