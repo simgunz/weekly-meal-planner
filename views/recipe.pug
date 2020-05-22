@@ -1,22 +1,23 @@
 extends layout
 
 block content
-  h1 #{recipe.name}
-  p: strong Number of servings
-  p #{recipe.servings}
-  p: strong Course
-  p #{recipe.course}
-  p: strong Category
-  p #{recipe.category}
-  p: strong Served with
-  p
-  each val, index in recipe.servedWith
-    a(href=val.url) #{val.name}
-    if index < recipe.servedWith.length - 1
-      |,
-  p: strong Ingredients
-  ul
-    each val in recipe.ingredients
-      li= val
-  p: strong Instructions
-  p #{recipe.instructions}
+  .container
+    h1 #{recipe.name}
+    p: strong Number of servings
+    p #{recipe.servings}
+    p: strong Course
+    p #{recipe.course}
+    p: strong Category
+    p #{recipe.category}
+    p: strong Served with
+    p
+    each val, index in recipe.servedWith
+      a(href=val.url) #{val.name}
+      if index < recipe.servedWith.length - 1
+        |,
+    p: strong Ingredients
+    ul
+      each val in recipe.ingredients
+        li= val
+    p: strong Instructions
+    p #{recipe.instructions}
