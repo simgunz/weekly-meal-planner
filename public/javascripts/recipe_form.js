@@ -26,7 +26,8 @@ $(document).ready(function($) {
     });
     return true;
   });
-  $('#ingredients-list').sortable({
-    handle: '.handle',
+
+  $('#course').selectize({
+    create: true,
   });
 });

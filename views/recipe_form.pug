@@ -1,8 +1,10 @@
 extends layout
 
+block head
+    link(rel='stylesheet' type='text/css' href='https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.css')
+
 block javascript
-  script(src='https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js')
-  script(src='https://cdn.jsdelivr.net/npm/jquery-sortablejs@latest/jquery-sortable.js')
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.js')
   script(src='/javascripts/recipe_form.js')
 
 block content
@@ -29,7 +31,7 @@ block content
       div.form-group.row
         label.col-sm-2.col-form-label(for='course') Course:
         div.col-sm-10
-          select#course.form-control(type='text'
+          select#course(type='text'
                                     name='course'
                                     value=(undefined===recipe ? '' : recipe.course))
             each course in courses
