@@ -24,7 +24,7 @@ block content
                     div.col-11
                       h2(style='margin-bottom: 0px') #{course._id}
                     div.col-1
-                      a(href='recipe/create/')
+                      a(href=`recipe/create?course=${course._id}`)
                         i.fa.fa-plus.fa-lg
                 ul.list-group.list-group-flush
                   each recipe in course.recipes

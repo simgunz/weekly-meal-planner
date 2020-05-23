@@ -4,7 +4,7 @@ const async = require('async');
 const Recipe = require('../models/recipe');
 
 const categories = ['Pollo', 'Carne', 'Pesce'];
-const courses = ['Secondo', 'Contorno'];
+const courses = ['Antipasto', 'Primo', 'Secondo', 'Contorno', 'Dessert'];
 
 exports.index = function(req, res) {
   res.send('NOT IMPLEMENTED: Site Home Page');
@@ -64,6 +64,7 @@ exports.recipe_create_get = function(req, res, next) {
     // Successful, so render.
     res.render('recipe_form', {
       title: 'Create Recipe',
+      defaultCourse: req.query.course,
       recipe_list: recipes,
       courses,
       categories,

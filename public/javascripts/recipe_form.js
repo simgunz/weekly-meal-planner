@@ -27,9 +27,5 @@ $(document).ready(function($) {
     return true;
   });
 
-  $('#course').selectize({
-    create: true,
-  });
-
   $('#servedWith').selectize({});
 });
