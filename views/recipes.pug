@@ -11,7 +11,7 @@ block content
     div.row
       div.col-lg-2.list-group
         each course, index in courses
-          a.list-group-item.list-group-item-action(href='#' + course._id, data-target="#recipes-carousel",
+          a.list-group-item.list-group-item-action(href='', data-target="#recipes-carousel",
             data-slide-to=index, class=index==0?'active':'') #{course._id}
 
       div.col-lg-10
