@@ -98,6 +98,10 @@ exports.recipe_create_post = [
   body('servings')
     .isNumeric()
     .withMessage('The number of servings must be specified.'),
+  body('course')
+    .isLength({ min: 1 })
+    .trim()
+    .withMessage('The course name must be specified.'),
   body('ingredients')
     .isArray()
     .withMessage('Ingredients must be an array.')
@@ -107,6 +111,7 @@ exports.recipe_create_post = [
 
   // Sanitize fields
   sanitizeBody('name').escape(),
+  sanitizeBody('course').escape(),
   sanitizeBody('ingredients.*').escape(),
   sanitizeBody('instructions').escape(),
 
