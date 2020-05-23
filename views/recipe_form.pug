@@ -34,7 +34,10 @@ block content
           select#course.form-control(type='text'
                         name='course')
             each course in courses
-              option(value=course, selected=(course===defaultCourse)) #{course}
+              if (course===defaultCourse)
+                option(value=course, selected) #{course}
+              else
+                option(value=course) #{course}
       div.form-group.row
         label.col-sm-2.col-form-label(for='category') Category:
         div.col-sm-10
@@ -52,11 +55,12 @@ block content
                             name='servedWith'
                             multiple)
             - recipe_list.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
-            each recipe in recipe_list
-              option(value=recipe._id) #{recipe.name}
-          //-   if recipeinstance
-          //-     option(value=recipe._id selected=(recipeinstance.recipe.toString()==recipe._id.toString() ? 'selected' : false)) #{recipe.title}
-          //-   else
+            each rec in recipe_list
+              console.log(rec._id)
+              if (recipe !== undefined && recipe.servedWith.includes(rec._id.toString()))
+                option(value=rec._id, selected) #{rec.name}
+              else
+                option(value=rec._id) #{rec.name}
       div.form-group.row
         label.col-sm-2.col-form-label(for='ingredients') Ingredients:
         div.col-sm-9
