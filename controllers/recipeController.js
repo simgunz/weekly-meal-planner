@@ -1,5 +1,4 @@
-const { body, validationResult } = require('express-validator/check');
-const { sanitizeBody } = require('express-validator/filter');
+const { body, validationResult } = require('express-validator');
 const async = require('async');
 
 const Recipe = require('../models/recipe');
@@ -79,7 +78,7 @@ exports.recipe_create_post = [
     req.body.ingredients = toArray(req.body.ingredients);
     next();
   },
-  // Validate fields
+  // Validate and sanitize fields
   body('name', 'Recipe name required')
     .isLength({ min: 1 })
     .trim()
@@ -94,26 +93,25 @@ exports.recipe_create_post = [
             );
           }
         })
-    ),
+    )
+    .escape(),
   body('servings')
     .isNumeric()
     .withMessage('The number of servings must be specified.'),
   body('course')
     .isLength({ min: 1 })
     .trim()
-    .withMessage('The course name must be specified.'),
+    .withMessage('The course name must be specified.')
+    .escape(),
   body('ingredients')
     .isArray()
     .withMessage('Ingredients must be an array.')
     .custom(ingredients => ingredients.length > 0)
     .withMessage('At least one ingredient must be provided.'),
-  body('instructions').trim(),
-
-  // Sanitize fields
-  sanitizeBody('name').escape(),
-  sanitizeBody('course').escape(),
-  sanitizeBody('ingredients.*').escape(),
-  sanitizeBody('instructions').escape(),
+  body('ingredients.*').escape(),
+  body('instructions')
+    .trim()
+    .escape(),
 
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -211,25 +209,29 @@ exports.recipe_update_post = [
     req.body.ingredients = toArray(req.body.ingredients);
     next();
   },
-  // Validate fields
+  // Validate and sanitize fields
   body('name', 'Recipe name required')
     .isLength({ min: 1 })
     .trim()
-    .withMessage('The recipe name must be specified.'),
+    .withMessage('The recipe name must be specified.')
+    .escape(),
   body('servings')
     .isNumeric()
     .withMessage('The number of servings must be specified.'),
+  body('course')
+    .isLength({ min: 1 })
+    .trim()
+    .withMessage('The course name must be specified.')
+    .escape(),
   body('ingredients')
     .isArray()
     .withMessage('Ingredients must be an array.')
     .custom(ingredients => ingredients.length > 0)
     .withMessage('At least one ingredient must be provided.'),
-  body('instructions').trim(),
-
-  // Sanitize fields
-  sanitizeBody('name').escape(),
-  sanitizeBody('ingredients.*').escape(),
-  sanitizeBody('instructions').escape(),
+  body('ingredients.*').escape(),
+  body('instructions')
+    .trim()
+    .escape(),
 
   // Process request after validation and sanitization.
   (req, res, next) => {
