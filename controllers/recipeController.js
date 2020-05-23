@@ -98,11 +98,6 @@ exports.recipe_create_post = [
   body('servings')
     .isNumeric()
     .withMessage('The number of servings must be specified.'),
-  body('course')
-    .isLength({ min: 1 })
-    .trim()
-    .withMessage('The course name must be specified.')
-    .escape(),
   body('ingredients')
     .isArray()
     .withMessage('Ingredients must be an array.')
@@ -218,11 +213,6 @@ exports.recipe_update_post = [
   body('servings')
     .isNumeric()
     .withMessage('The number of servings must be specified.'),
-  body('course')
-    .isLength({ min: 1 })
-    .trim()
-    .withMessage('The course name must be specified.')
-    .escape(),
   body('ingredients')
     .isArray()
     .withMessage('Ingredients must be an array.')
