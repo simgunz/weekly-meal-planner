@@ -1,6 +1,9 @@
 $(document).ready(function($) {
   $('#ingredients-add').click(function(e) {
     const val = $('#ingredients-input').val();
+    if (!val) {
+      return;
+    }
     $('#ingredients-list').append(`<li>${val}</li>`);
     $('#ingredients-input').val('');
     e.preventDefault();
